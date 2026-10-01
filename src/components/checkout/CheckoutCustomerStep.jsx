@@ -1,0 +1,208 @@
+import React from "react";
+import { User, Mail, Phone, Lock, CheckCircle2, ChevronRight } from "lucide-react";
+
+export default function CheckoutCustomerStep({
+  customer,
+  onCustomerChange,
+  currentUser,
+  savedAddresses = [],
+  selectedAddressId,
+  onSelectSavedAddress,
+  onOpenAuthModal,
+  onNextStep,
+  loading = false,
+}) {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    onCustomerChange({
+      ...customer,
+      [name]: value,
+    });
+  };
+
+  const isFormValid =
+    customer.email?.trim() &&
+    customer.phone?.trim() &&
+    customer.firstName?.trim() &&
+    customer.lastName?.trim();
+
+  return (
+    <div className="bg-white border border-stone-200 rounded-2xl p-5 sm:p-7 shadow-xs">
+      <div className="flex items-center justify-between pb-4 border-b border-stone-100 mb-6">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-full bg-amber-50 text-[#700b10] border border-amber-200 flex items-center justify-center font-bold text-xs">
+            1
+          </div>
+          <div>
+            <h2 className="font-serif text-lg font-bold text-stone-900 leading-tight">
+              Customer Contact &amp; Identity
+            </h2>
+            <p className="text-xs text-stone-500 font-sans">
+              Provide your details for order confirmation receipts &amp; dispatch tracking.
+            </p>
+          </div>
+        </div>
+
+        {!currentUser && (
+          <button
+            type="button"
+            onClick={onOpenAuthModal}
+            className="text-xs font-bold text-[#700b10] hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <Lock className="w-3.5 h-3.5" />
+            <span>Sign In</span>
+          </button>
+        )}
+      </div>
+
+      {currentUser && (
+        <div className="mb-6 p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/80 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-full bg-[#700b10] text-white flex items-center justify-center text-xs font-bold">
+              {(currentUser.first_name || currentUser.name || "U")[0]?.toUpperCase()}
+            </div>
+            <div>
+              <p className="text-xs font-bold text-stone-900">
+                Logged in as {currentUser.first_name} {currentUser.last_name || ""}
+              </p>
+              <p className="text-[11px] text-stone-500">{currentUser.email || currentUser.phone}</p>
+            </div>
+          </div>
+          <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded-md">
+            Verified Member
+          </span>
+        </div>
+      )}
+
+      {/* Saved Addresses for Logged-in Customer */}
+      {currentUser && savedAddresses && savedAddresses.length > 0 && (
+        <div className="mb-6">
+          <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-2.5">
+            Select Saved Shipping Address
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {savedAddresses.map((addr) => {
+              const isSelected = selectedAddressId === addr.id;
+              return (
+                <div
+                  key={addr.id}
+                  onClick={() => onSelectSavedAddress && onSelectSavedAddress(addr)}
+                  className={`p-3.5 rounded-xl border text-xs cursor-pointer transition-all ${
+                    isSelected
+                      ? "border-[#700b10] bg-amber-50/40 ring-1 ring-[#700b10]"
+                      : "border-stone-200 hover:border-stone-300 bg-white"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="font-bold text-stone-900">
+                      {addr.first_name} {addr.last_name}
+                    </span>
+                    {isSelected && <CheckCircle2 className="w-4 h-4 text-[#700b10] shrink-0" />}
+                  </div>
+                  <p className="text-stone-600 mt-1 leading-snug truncate">
+                    {addr.address_line1 || addr.address1}
+                  </p>
+                  <p className="text-stone-500 text-[11px]">
+                    {addr.city}, {addr.state} - {addr.pincode}
+                  </p>
+                  <p className="text-stone-400 text-[11px] mt-0.5">{addr.phone}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Input Fields */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-semibold text-stone-700 mb-1">
+              First Name <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+              <input
+                type="text"
+                name="firstName"
+                value={customer.firstName || ""}
+                onChange={handleChange}
+                placeholder="e.g. Shantanu"
+                required
+                className="w-full pl-9 pr-3 py-2.5 bg-stone-50/50 border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 focus:bg-white focus:outline-hidden focus:border-[#700b10] focus:ring-1 focus:ring-[#700b10] transition-all"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-stone-700 mb-1">
+              Last Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="lastName"
+              value={customer.lastName || ""}
+              onChange={handleChange}
+              placeholder="e.g. Kolhatkar"
+              required
+              className="w-full px-3 py-2.5 bg-stone-50/50 border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 focus:bg-white focus:outline-hidden focus:border-[#700b10] focus:ring-1 focus:ring-[#700b10] transition-all"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-semibold text-stone-700 mb-1">
+              Email Address <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+              <input
+                type="email"
+                name="email"
+                value={customer.email || ""}
+                onChange={handleChange}
+                placeholder="customer@example.com"
+                required
+                className="w-full pl-9 pr-3 py-2.5 bg-stone-50/50 border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 focus:bg-white focus:outline-hidden focus:border-[#700b10] focus:ring-1 focus:ring-[#700b10] transition-all"
+              />
+            </div>
+            <span className="text-[10px] text-stone-400 mt-1 block">Invoices &amp; order updates sent here</span>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-stone-700 mb-1">
+              Mobile Phone <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+              <input
+                type="tel"
+                name="phone"
+                value={customer.phone || ""}
+                onChange={handleChange}
+                placeholder="+91 98765 43210"
+                required
+                className="w-full pl-9 pr-3 py-2.5 bg-stone-50/50 border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 focus:bg-white focus:outline-hidden focus:border-[#700b10] focus:ring-1 focus:ring-[#700b10] transition-all"
+              />
+            </div>
+            <span className="text-[10px] text-stone-400 mt-1 block">For delivery agent call &amp; WhatsApp updates</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Continue Button */}
+      <div className="mt-6 pt-4 border-t border-stone-100 flex justify-end">
+        <button
+          type="button"
+          onClick={onNextStep}
+          disabled={!isFormValid || loading}
+          className="bg-[#700b10] hover:bg-[#54060b] disabled:opacity-50 text-white py-3 px-6 rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer"
+        >
+          <span>Continue to Shipping</span>
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}

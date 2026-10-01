@@ -1,0 +1,269 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary-maroon: #700b10;
+    --primary-dark-maroon: #54060b;
+    --deep-maroon: #810000;
+    --accent-gold: #b5944d;
+    --accent-light-gold: #ebd99c;
+    --accent-hover-gold: #c6a55e;
+    --bg-cream: #ffffff;
+    --border-cream: #f0e9dc;
+    --text-dark: #1c1917;
+    --text-muted: #6b7280;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+    color: var(--text-dark);
+    background-color: var(--bg-cream);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img,
+  picture,
+  svg,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+  a,
+  li {
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+
+  /* Specific typography classes matching store.nilkanthdham.in */
+  .font-tenor {
+    font-family: 'Tenor Sans', serif;
+  }
+
+  .font-jost {
+    font-family: 'Jost', sans-serif;
+  }
+
+  .font-nunito {
+    font-family: 'Nunito', sans-serif;
+  }
+}
+
+/* Animations matching store.nilkanthdham.in marquee and sliders */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 45s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes usp-marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-usp-marquee {
+  display: flex;
+  width: max-content;
+  animation: usp-marquee 30s linear infinite;
+}
+
+.animate-usp-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Gentle, smooth product marquee for elegant readability */
+@keyframes product-marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-product-marquee {
+  display: flex;
+  width: max-content;
+  animation: product-marquee-scroll 300s linear infinite;
+  will-change: transform;
+}
+
+.animate-product-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Smooth continuous infinite marquee for customer testimonials */
+@keyframes testimonial-marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-testimonial-marquee {
+  display: flex;
+  width: max-content;
+  animation: testimonial-marquee-scroll 38s linear infinite;
+  will-change: transform;
+}
+
+.animate-testimonial-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #700b10;
+  border-radius: 9999px;
+}
+
+/* Reference site style thin maroon scrollbar */
+.custom-scrollbar-maroon::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar-maroon::-webkit-scrollbar-track {
+  background: #faf6eb;
+  border-radius: 4px;
+}
+
+.custom-scrollbar-maroon::-webkit-scrollbar-thumb {
+  background: #700b10;
+  border-radius: 4px;
+}
+
+/* Modal Smooth Animations */
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: modal-fade-in 0.2s ease-out forwards;
+}
+
+.animate-scaleUp {
+  animation: modal-scale-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Blog Article Post Content Images - beautifully sized & responsive */
+.blog-detail-content {
+  width: 100%;
+}
+
+.blog-detail-content p:has(> img) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 1.5rem 0 2rem 0 !important;
+}
+
+.blog-detail-content img {
+  width: 100% !important;
+  max-width: 820px !important;
+  height: auto !important;
+  max-height: 540px !important;
+  object-fit: cover !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(231, 229, 228, 0.9) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.blog-detail-content img:hover {
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.12) !important;
+}
+
+@media (max-width: 768px) {
+  .blog-detail-content img {
+    max-width: 100% !important;
+    max-height: 400px !important;
+    border-radius: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-detail-content img {
+    max-height: 300px !important;
+    border-radius: 0.85rem !important;
+  }
+}
+
+/* Prevent auto-zooming on focus in iOS Safari and Mobile Chrome */
+@media (max-width: 768px) {
+
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
